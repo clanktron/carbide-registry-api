@@ -1,4 +1,4 @@
-# Carbide Images API
+# Carbide Registry API
 
 The database of hardened images for rancher government carbide resides in our secured cloud. This stateless API should act as a simple interface to such.
 
@@ -17,7 +17,7 @@ make help
 ## Deploy
 Bare-metal, docker, and k8s deployments are all supported - though k8s is recommended.
 ```bash
-helm install carbide-images-api ./chart --values <values-file>
+helm install carbide-registry-api ./chart --values <values-file>
 ```
 ## Testing
 For now an insomnia file can be found at `./example/exampleQueries.json`.

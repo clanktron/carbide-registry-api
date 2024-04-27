@@ -1,4 +1,4 @@
-BINARY_NAME=carbide-images-api
+BINARY_NAME=carbide-registry-api
 ORG=rancher-government-carbide
 CONTAINER_TAG=$(ORG)/$(BINARY_NAME)
 CONTAINERFILE=./Containerfile

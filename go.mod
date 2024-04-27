@@ -1,4 +1,4 @@
-module carbide-images-api
+module carbide-registry-api
 
 go 1.22.0
 

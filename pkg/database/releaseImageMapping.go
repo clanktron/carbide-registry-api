@@ -1,7 +1,7 @@
 package database
 
 import (
-	"carbide-images-api/pkg/objects"
+	"carbide-registry-api/pkg/objects"
 	"database/sql"
 	"errors"
 	"fmt"

@@ -1,7 +1,7 @@
 package api
 
 import (
-	"carbide-images-api/pkg/api/middleware"
+	"carbide-registry-api/pkg/api/middleware"
 	"database/sql"
 	"net/http"
 )

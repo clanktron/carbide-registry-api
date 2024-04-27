@@ -1,9 +1,9 @@
 package api
 
 import (
-	"carbide-images-api/pkg/api/utils"
-	DB "carbide-images-api/pkg/database"
-	"carbide-images-api/pkg/objects"
+	"carbide-registry-api/pkg/api/utils"
+	DB "carbide-registry-api/pkg/database"
+	"carbide-registry-api/pkg/objects"
 	"database/sql"
 	"net/http"
 	"strconv"

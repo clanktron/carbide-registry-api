@@ -8,8 +8,8 @@ usage() {
     echo "  --help             Show this usage message"
 }
 
-# NS to deploy carbide-images-api db and api
-NAMESPACE="${NAMESPACE:-carbide-images-api}"
+# NS to deploy carbide-registry-api db and api
+NAMESPACE="${NAMESPACE:-carbide-registry-api}"
 CREDENTIALS_SECRET_NAME=mypwds
 INNODB_CLUSTER_NAME=carbide
 

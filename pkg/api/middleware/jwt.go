@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"carbide-images-api/pkg/api/utils"
-	"carbide-images-api/pkg/objects"
+	"carbide-registry-api/pkg/api/utils"
+	"carbide-registry-api/pkg/objects"
 	"errors"
 	"fmt"
 	"net/http"
