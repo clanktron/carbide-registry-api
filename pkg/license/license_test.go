@@ -1,7 +1,9 @@
 package license
 
 import (
-	"math/rand"
+	"crypto/rand"
+	"crypto/rsa"
+	mathrand "math/rand"
 	"testing"
 	"time"
 )
@@ -12,7 +14,7 @@ func randString(length int) string {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	b := make([]byte, length)
 	for i := range b {
-		b[i] = charset[rand.Intn(len(charset))]
+		b[i] = charset[mathrand.Intn(len(charset))]
 	}
 	return string(b)
 }
@@ -22,7 +24,11 @@ func TestCreateCarbideLicense(t *testing.T) {
 	daysTillExpiry := 35
 	customerID := CUSTOMER_ID_PREFIX + randString(5)
 	expiry := time.Now().Add(time.Hour * 24 * time.Duration(daysTillExpiry))
-	license, err := CreateCarbideLicense(nodeCount, customerID, expiry)
+	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		panic(err)
+	}
+	license, err := CreateCarbideLicense(privateKey, nodeCount, customerID, expiry)
 	if err != nil {
 		t.Fatal(err)
 	}

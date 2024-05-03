@@ -5,12 +5,26 @@ import (
 	"carbide-images-api/pkg/azure"
 	"carbide-images-api/pkg/license"
 	"carbide-images-api/pkg/objects"
+	"crypto/rsa"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
+	"github.com/ebauman/golicense/pkg/certificate"
 	log "github.com/sirupsen/logrus"
 )
+
+var PRIVATEKEY *rsa.PrivateKey
+
+func init() {
+	var GOLICENSE_KEY = os.Getenv("GOLICENSE_KEY")
+	var err error
+	PRIVATEKEY, err = certificate.PEMToPrivateKey([]byte(GOLICENSE_KEY))
+	if err != nil {
+		panic(err)
+	}
+}
 
 func createCarbideAccountHandler(clientFactory *armcontainerregistry.ClientFactory) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +41,7 @@ func createCarbideAccountHandler(clientFactory *armcontainerregistry.ClientFacto
 			return
 		}
 		expiry := time.Now().Add(time.Hour * 24 * time.Duration(*newLicense.DaysTillExpiry))
-		newLicense.License, err = license.CreateCarbideLicense(*newLicense.NodeCount, *newLicense.CustomerID, expiry)
+		newLicense.License, err = license.CreateCarbideLicense(PRIVATEKEY, *newLicense.NodeCount, *newLicense.CustomerID, expiry)
 		if err != nil {
 			log.Error(err)
 			utils.HttpJSONError(w, err.Error(), http.StatusInternalServerError)
