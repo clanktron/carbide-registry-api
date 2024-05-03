@@ -13,8 +13,6 @@ func NewRouter(db *sql.DB, clientFactory *armcontainerregistry.ClientFactory) ht
 	withAuth := middleware.JWTAuth
 	mux.Handle("GET /healthcheck", middleware.Healthcheck())
 	mux.Handle("POST /carbide/license", withAuth(createCarbideAccountHandler(clientFactory)))
-	mux.Handle("POST /user", createUserHandler(db))
-	mux.Handle("DELETE /user", deleteUserHandler(db))
 	mux.Handle("GET /auth", authCheckHandler())
 	mux.Handle("POST /auth", loginHandler(db))
 	mux.Handle("GET /product", withAuth(getAllProductsHandler(db)))

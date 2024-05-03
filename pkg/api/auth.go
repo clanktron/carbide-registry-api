@@ -19,69 +19,6 @@ func authCheckHandler() http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-func createUserHandler(db *sql.DB) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		var newUser objects.User
-		err := utils.DecodeJSONObject(w, r, &newUser)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		if err := DB.AddUser(db, newUser); err != nil {
-			log.Error(err)
-			utils.HttpJSONError(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		newUser, err = DB.GetUser(db, *newUser.Username)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		log.WithFields(log.Fields{
-			"user": *newUser.Username,
-		}).Info("user has been successfully created")
-		err = middleware.Authenticate(w, newUser)
-		if err != nil {
-			log.Error(err)
-		}
-		utils.RespondWithJSON(w, "user has been created")
-		return
-	}
-	return http.HandlerFunc(fn)
-}
-
-func deleteUserHandler(db *sql.DB) http.HandlerFunc {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		var userToDelete objects.User
-		err := utils.DecodeJSONObject(w, r, &userToDelete)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		if err := DB.VerifyUser(db, userToDelete); err != nil {
-			log.WithFields(log.Fields{
-				"username": *userToDelete.Username,
-				"error":    err,
-			}).Error("invalid username or password")
-			utils.HttpJSONError(w, "invalid username or password", http.StatusBadRequest)
-			return
-		}
-		if err := DB.DeleteUserByUsername(db, *userToDelete.Username); err != nil {
-			log.WithFields(log.Fields{
-				"username": *userToDelete.Username,
-				"error":    err,
-			}).Error("failed to delete user")
-			return
-		}
-		log.WithFields(log.Fields{
-			"user": *userToDelete.Username,
-		}).Info("user has been successfully deleted")
-		utils.RespondWithJSON(w, "user has been deleted")
-		return
-	}
-	return http.HandlerFunc(fn)
-}
-
 func loginHandler(db *sql.DB) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		var userLoggingIn objects.User

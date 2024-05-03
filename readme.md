@@ -44,13 +44,7 @@ You can either follow their instructions or run `./bin/mysql.sh` which should de
 | AZURE_CLIENT_SECRET   | Azure client secret/password      | false                     |
 
 ## REST Schema
-- /user
-    - POST: accepts username and password
-        - creates user account
-        - only returns cookie first time user is created
-    - DELETE: accepts username and password
-        - deletes user account
-- /login
+- /auth
     - POST: should accept username and password
         - returns authentication cookie/token (stored in browser by frontend)  
 >The following require the user to have provide their auth token via cookie:
