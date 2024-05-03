@@ -29,3 +29,12 @@ func CreateCarbideLicense(privateKey *rsa.PrivateKey, nodeCount int, customerID 
 	}
 	return &keystring, nil
 }
+
+func ValidateCarbideLicense(license *string, pubkeys []*rsa.PublicKey) error {
+	licenseBytes := []byte(*license)
+	_, err := golicense.ParseLicenseKey(licenseBytes, pubkeys)
+	if err != nil {
+		return err
+	}
+	return nil
+}
