@@ -3,21 +3,15 @@ package database
 import (
 	"carbide-images-api/pkg/objects"
 	"database/sql"
-	"errors"
-	"fmt"
 )
 
 func AddProduct(db *sql.DB, newProduct objects.Product) error {
-	const requiredField string = "missing field \"%s\" required when creating a new product"
-	const sqlError string = "error creating new product: %w"
-	if newProduct.Name == nil {
-		errMsg := fmt.Sprintf(requiredField, "Name")
-		return errors.New(errMsg)
-	} else {
-		_, err := db.Exec("INSERT INTO product (name) VALUES (?)", *newProduct.Name)
-		if err != nil {
-			return fmt.Errorf(sqlError, err)
-		}
+	if err := newProduct.Validate(); err != nil {
+		return err
+	}
+	_, err := db.Exec("INSERT INTO product (name) VALUES (?)", *newProduct.Name)
+	if err != nil {
+		return err
 	}
 	return nil
 }
