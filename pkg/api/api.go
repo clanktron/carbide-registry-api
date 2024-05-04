@@ -10,11 +10,11 @@ import (
 
 func NewRouter(db *sql.DB, clientFactory *armcontainerregistry.ClientFactory) http.Handler {
 	mux := http.NewServeMux()
-	withAuth := middleware.JWTAuth
+	withAuth := middleware.SessionAuth
 	mux.Handle("GET /healthcheck", middleware.Healthcheck())
 	mux.Handle("POST /carbide/license", withAuth(createCarbideAccountHandler(clientFactory)))
 	mux.Handle("GET /auth", authCheckHandler())
-	mux.Handle("POST /auth", loginHandler(db))
+	mux.Handle("POST /auth", loginHandler())
 	mux.Handle("GET /product", withAuth(getAllProductsHandler(db)))
 	mux.Handle("POST /product", withAuth(createProductHandler(db)))
 	mux.Handle("GET /product/{productName}", withAuth(getProductHandler(db)))
