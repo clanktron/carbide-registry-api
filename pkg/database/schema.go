@@ -61,6 +61,7 @@ func ensureProductTable(db *sql.DB) error {
 		CREATE TABLE IF NOT EXISTS product (
 		  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 		  name VARCHAR(255) NOT NULL,
+		  logo_url VARCHAR(255) NOT NULL,
 		  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 		  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 		)`); err != nil {
