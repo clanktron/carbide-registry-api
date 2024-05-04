@@ -3,6 +3,8 @@ package utils
 import (
 	"encoding/json"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type Response struct {
@@ -12,7 +14,8 @@ type Response struct {
 func SendAsJSON(w http.ResponseWriter, object interface{}) error {
 	json, err := json.Marshal(object)
 	if err != nil {
-		HttpJSONError(w, err.Error(), http.StatusBadRequest)
+		HttpJSONError(w, err.Error(), http.StatusInternalServerError)
+		log.Error(err)
 		return err
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -34,6 +37,7 @@ func DecodeJSONObject(w http.ResponseWriter, r *http.Request, object interface{}
 	err := json.NewDecoder(r.Body).Decode(object)
 	if err != nil {
 		HttpJSONError(w, err.Error(), http.StatusBadRequest)
+		log.Error(err)
 		return err
 	}
 	return nil

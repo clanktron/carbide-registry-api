@@ -34,8 +34,6 @@ func createCarbideAccountHandler(clientFactory *armcontainerregistry.ClientFacto
 		var newLicense objects.CarbideLicense
 		err := utils.DecodeJSONObject(w, r, &newLicense)
 		if err != nil {
-			log.Error(err)
-			utils.HttpJSONError(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		if newLicense.CustomerID == nil || newLicense.DaysTillExpiry == nil || newLicense.NodeCount == nil {
