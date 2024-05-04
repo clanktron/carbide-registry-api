@@ -19,6 +19,9 @@ var PRIVATEKEY *rsa.PrivateKey
 
 func init() {
 	var GOLICENSE_KEY = os.Getenv("GOLICENSE_KEY")
+	if GOLICENSE_KEY == "" {
+		log.Fatal("Missing GOLICENSE_KEY env variable (carbide license private key), exiting...")
+	}
 	var err error
 	PRIVATEKEY, err = certificate.PEMToPrivateKey([]byte(GOLICENSE_KEY))
 	if err != nil {
