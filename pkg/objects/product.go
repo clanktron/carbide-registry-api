@@ -7,6 +7,7 @@ import (
 type Product struct {
 	Id        int32
 	Name      *string
+	LogoUrl   *string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
