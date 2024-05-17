@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "carbide-images-api.fullname" . }}
+  name: {{ include "carbide-registry-api.fullname" . }}
   labels:
-    {{- include "carbide-images-api.labels" . | nindent 4 }}
+    {{- include "carbide-registry-api.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "carbide-images-api.selectorLabels" . | nindent 6 }}
+      {{- include "carbide-registry-api.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "carbide-images-api.selectorLabels" . | nindent 8 }}
+        {{- include "carbide-registry-api.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -33,7 +33,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           envFrom:
           - configMapRef:
-              name: {{ include "carbide-images-api.fullname" . }}-env
+              name: {{ include "carbide-registry-api.fullname" . }}-env
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
