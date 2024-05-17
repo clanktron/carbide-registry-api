@@ -27,6 +27,20 @@ spec:
       automountServiceAccountToken: false
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: create-db
+          image: container-registry.oracle.com/mysql/community-operator
+          args:
+          - mysqlsh
+          - --user=$(DBUSER)
+          - --host=$(DBHOST)
+          - --password=$(DBPASS)
+          - --sqlc
+          - --execute=CREATE DATABASE IF NOT EXISTS $(DBNAME)
+          envFrom:
+          - configMapRef:
+              name: {{ include "carbide-registry-api.fullname" . }}-env
+            readOnlyRootFilesystem: false
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
